@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City to Pincode</title>
+    <script>
+        // Function to fetch and display the pincode for the entered city
+        function fetchPincode() {
+            const cityInput = document.getElementById('cityInput').value;
+            const pincodeDisplay = document.getElementById('pincodeDisplay');
+
+            // Hypothetical API endpoint that fetches pincode based on city name
+            const apiUrl = `https://api.postalpincode.in/pincode/{110001}=${encodeURIComponent(cityInput)}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.pincode) {
+                        pincodeDisplay.textContent = `Pincode: ${data.pincode}`;
+                    } else {
+                        pincodeDisplay.textContent = 'City not found or no pincode available!';
+                    }
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    pincodeDisplay.textContent = 'An error occurred while fetching the pincode.';
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Enter City Name to Get Pincode</h1>
+    <form onsubmit="event.preventDefault(); fetchPincode();">
+        <label for="cityInput">City Name:</label>
+        <input type="text" id="cityInput" name="cityInput" required>
+        <button type="submit">Get Pincode</button>
+    </form>
+    <p id="pincodeDisplay"></p>
+</body>
+</html>
+
